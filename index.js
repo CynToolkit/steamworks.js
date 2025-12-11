@@ -19,6 +19,7 @@ if (platform === 'win32' && arch === 'x64') {
 }
 
 let runCallbacksInterval = undefined
+let steamOverlayInitialized = false
 
 /**
  * Initialize the steam client or throw an error if it fails
@@ -39,7 +40,7 @@ module.exports.init = (appId) => {
 /**
  * @param {number} appId - App ID of the game to load
  * {@link https://partner.steamgames.com/doc/api/steam_api#SteamAPI_RestartAppIfNecessary}
- * @returns {boolean} 
+ * @returns {boolean}
  */
 module.exports.restartAppIfNecessary = (appId) => nativeBinding.restartAppIfNecessary(appId);
 
@@ -71,6 +72,81 @@ module.exports.electronEnableSteamOverlay = (disableEachFrameInvalidation) => {
         electron.BrowserWindow.getAllWindows().forEach(attachFrameInvalidator)
         electron.app.on('browser-window-created', (_, bw) => attachFrameInvalidator(bw))
     }
+}
+
+module.exports.electronEnableSteamOverlay2 = (fpsLimit = 30) => {
+    if (steamOverlayInitialized) {
+        console.log('Steam overlay already initialized');
+        return;
+    }
+
+    const electron = require('electron')
+    if (!electron) {
+        throw new Error('Electron module not found')
+    }
+    const app = electron.app
+
+    // Check if app is ready
+    if (!app.isReady()) {
+        throw new Error('Electron app is not ready');
+    }
+
+    // Wrap switch appending in try-catch
+    try {
+        app.commandLine.appendSwitch('in-process-gpu');
+        app.commandLine.appendSwitch('disable-direct-composition');
+        app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
+        app.commandLine.appendSwitch('disable-http-cache');
+        app.commandLine.appendSwitch('use-angle', 'd3d11');
+        app.commandLine.appendSwitch('disable-renderer-backgrounding');
+        app.commandLine.appendSwitch('disable-background-timer-throttling');
+    } catch (error) {
+        console.error('Error appending command line switches:', error);
+        throw error;
+    }
+
+    /** @param {electron.BrowserWindow} browserWindow */
+    const attachOverlayInvalidator = (window) => {
+        // Validate window and webContents existence
+        if (!window || !window.webContents) {
+            console.error('Invalid window or webContents');
+            return;
+        }
+
+        const FPS_LIMIT = fpsLimit;
+
+        try {
+            const intervalId = setInterval(() => {
+                try {
+                    if (!window.isDestroyed() && window.isVisible()) {
+                        // Invalidation "douce" sans forcer si le compositeur est déjà occupé
+                        const { webContents } = window;
+                        if (webContents && !webContents.isPainting()) {
+                            webContents.invalidate();
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error in overlay invalidator interval:', error);
+                }
+            }, 1000 / FPS_LIMIT);
+
+            window.once('closed', () => {
+                clearInterval(intervalId);
+            });
+        } catch (error) {
+            console.error('Error setting up overlay invalidator:', error);
+        }
+    };
+
+    try {
+        electron.BrowserWindow.getAllWindows().forEach(attachOverlayInvalidator)
+        electron.app.on('browser-window-created', (_, bw) => attachOverlayInvalidator(bw))
+    } catch (error) {
+        console.error('Error attaching overlay invalidator:', error);
+        throw error;
+    }
+
+    steamOverlayInitialized = true;
 }
 
 const SteamCallback = nativeBinding.callback.SteamCallback
