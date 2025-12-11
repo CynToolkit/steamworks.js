@@ -1,6 +1,6 @@
 {
     "name": "@armaldio/steamworks.js",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "main": "index.js",
     "types": "index.d.ts",
     "publishConfig": {
