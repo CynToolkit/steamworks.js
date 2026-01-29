@@ -1,6 +1,6 @@
-# steamworks.js (Community Fork)
+# Pipelab's steamworks.js
 
-> **Note**: This is an actively maintained community fork of [steamworks.js](https://github.com/CynToolkit/steamworks.js).
+> **Note**: This is an actively maintained community fork of [steamworks.js](https://github.com/ceifa/steamworks.js).
 > We're keeping the project active by reviewing and merging pending PRs and addressing issues.
 
 ## Why This Fork?
@@ -11,46 +11,42 @@
 - ✅ NW.js support improvements
 - ✅ Incorporating pending PRs from upstream
 
+This fork is maintained by [Pipelab](https://pipelab.app).
+
 ## Installation
 
 ```bash
 # npm - use our scoped package
-npm install @mikaldev/steamworks.js
+npm install @pipelab/steamworks.js
 
 # Or reference directly from GitHub
-npm install github:MikalDev/steamworks.js
+npm install github:CynToolkit/steamworks.js
 
 # For Electron/NW.js projects
-npm install github:MikalDev/steamworks.js --runtime=electron --target=27.0.0
-npm install github:MikalDev/steamworks.js --runtime=node-webkit --target=0.75.0
-
+npm install github:CynToolkit/steamworks.js --runtime=electron --target=27.0.0
+npm install github:CynToolkit/steamworks.js --runtime=node-webkit --target=0.75.0
+```
 
 [![Build Status](https://github.com/CynToolkit/steamworks.js/actions/workflows/publish.yml/badge.svg)](https://github.com/CynToolkit/steamworks.js/actions/workflows/publish.yml)
-[![npm](https://img.shields.io/npm/v/steamworks.js.svg)](https://npmjs.com/package/steamworks.js)
+[![npm](https://img.shields.io/npm/v/@pipelab/steamworks.js.svg)](https://npmjs.com/package/@pipelab/steamworks.js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Chat](https://img.shields.io/discord/663831597690257431?label=chat&logo=discord)](https://discord.gg/H6B7UE7fMY)
+
+To make the steam overlay working, call the `electronEnableSteamOverlay` on the end of your `main.js` file:
+
+```js
+require('@pipelab/steamworks.js').electronEnableSteamOverlay()
+```
+
+For the production build, copy the relevant distro files from `sdk/redistributable_bin/{YOUR_DISTRO}` into the root of your build. If you are using electron-forge, look for [#75](https://github.com/CynToolkit/steamworks.js/issues/75).
 
 # Steamworks.js
 
 A modern implementation of the Steamworks SDK for HTML/JS and NodeJS based applications.
 
-## Why
-
-I used [greenworks](https://github.com/greenheartgames/greenworks) for a long time and it's great, but I gave up for the following reasons.
-
-* It's not being maintained anymore.
-* It's not up to date.
-* It's not context-aware.
-* You have to build the binaries by yourself.
-* Don't have typescript definitions.
-* The API it's not trustful.
-* The API implement callbacks instead of return flags or promises.
-* I hate C++.
-
 ## API
 
 ```js
-const steamworks = require('steamworks.js')
+const steamworks = require('@pipelab/steamworks.js')
 
 // You can pass an appId, or don't pass anything and use a steam_appid.txt file
 const client = steamworks.init(480)
@@ -65,37 +61,6 @@ if (client.achievement.activate('ACHIEVEMENT')) {
 ```
 
 You can refer to the [declarations file](https://github.com/CynToolkit/steamworks.js/blob/main/client.d.ts) to check the API support and get more detailed documentation of each function.
-
-## Installation
-
-To use steamworks.js you don't have to build anything, just install it from npm:
-
-```sh
-$: npm i steamworks.js
-```
-
-### Electron
-
-Steamworks.js is a native module and cannot be used by default in the renderer process. To enable the usage of native modules on the renderer process, the following configurations should be made on `main.js`:
-
-```js
-const mainWindow = new BrowserWindow({
-    // ...
-    webPreferences: {
-        // ...
-        contextIsolation: false,
-        nodeIntegration: true
-    }
-})
-```
-
-To make the steam overlay working, call the `electronEnableSteamOverlay` on the end of your `main.js` file:
-
-```js
-require('steamworks.js').electronEnableSteamOverlay()
-```
-
-For the production build, copy the relevant distro files from `sdk/redistributable_bin/{YOUR_DISTRO}` into the root of your build. If you are using electron-forge, look for [#75](https://github.com/CynToolkit/steamworks.js/issues/75).
 
 
 ## How to build

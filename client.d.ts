@@ -57,8 +57,9 @@ export declare namespace callback {
     P2PSessionConnectFail = 7,
     GameLobbyJoinRequested = 8,
     MicroTxnAuthorizationResponse = 9,
-    ScreenshotRequested = 10,
-    ScreenshotReady = 11
+    GameOverlayActivated = 10,
+    ScreenshotRequested = 11,
+    ScreenshotReady = 12
   }
   export function register<C extends keyof import('./callbacks').CallbackReturns>(steamCallback: C, handler: (value: import('./callbacks').CallbackReturns[C]) => void): Handle
   export class Handle {

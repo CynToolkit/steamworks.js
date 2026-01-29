@@ -48,6 +48,7 @@ pub mod callback {
         P2PSessionConnectFail,
         GameLobbyJoinRequested,
         MicroTxnAuthorizationResponse,
+        GameOverlayActivated,
         ScreenshotRequested,
         ScreenshotReady,
     }
@@ -92,6 +93,9 @@ pub mod callback {
             }
             SteamCallback::MicroTxnAuthorizationResponse => {
                 register_callback::<steamworks::MicroTxnAuthorizationResponse>(threadsafe_handler)
+            }
+            SteamCallback::GameOverlayActivated => {
+                register_callback::<steamworks::GameOverlayActivated>(threadsafe_handler)
             }
             // TODO: Uncomment when steamworks-rs exposes these callback types
             SteamCallback::ScreenshotRequested => {
