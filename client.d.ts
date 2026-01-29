@@ -56,7 +56,9 @@ export declare namespace callback {
     P2PSessionRequest = 6,
     P2PSessionConnectFail = 7,
     GameLobbyJoinRequested = 8,
-    MicroTxnAuthorizationResponse = 9
+    MicroTxnAuthorizationResponse = 9,
+    ScreenshotRequested = 10,
+    ScreenshotReady = 11
   }
   export function register<C extends keyof import('./callbacks').CallbackReturns>(steamCallback: C, handler: (value: import('./callbacks').CallbackReturns[C]) => void): Handle
   export class Handle {
@@ -262,9 +264,56 @@ export declare namespace overlay {
 }
 export declare namespace screenshots {
   /**
-   * Triggers the Steam overlay to take a screenshot.
+   * Toggles whether the overlay handles screenshots when the user presses the screenshot hotkey,
+   * or if the game handles them.
+   *
+   * Hooking is disabled by default, and only ever enabled if you do so with this function.
+   *
+   * If hooking is enabled, then the ScreenshotRequested callback will be sent if the user presses
+   * the hotkey or when triggerScreenshot is called, and then the game is expected to call
+   * addScreenshotToLibrary in response.
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#HookScreenshots}
+   */
+  export function hookScreenshots(hook: boolean): void
+  /**
+   * Checks if the app is hooking screenshots, or if the Steam Overlay is handling them.
+   *
+   * @returns true if the game is hooking screenshots and is expected to handle them; otherwise, false.
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#IsScreenshotsHooked}
+   */
+  export function isScreenshotsHooked(): boolean
+  /**
+   * Either causes the Steam Overlay to take a screenshot, or tells your screenshot manager
+   * that a screenshot needs to be taken, depending on whether hooking is enabled.
+   *
+   * If hooking is disabled (default):
+   * - Steam overlay takes the screenshot automatically
+   * - Screenshot is saved to Steam's screenshot folder
+   * - Can be viewed in Steam > View > Screenshots
+   *
+   * If hooking is enabled via hookScreenshots(true):
+   * - A ScreenshotRequested callback is triggered
+   * - Your game must handle the screenshot by calling addScreenshotToLibrary
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#TriggerScreenshot}
    */
   export function triggerScreenshot(): void
+  /**
+   * Adds a screenshot to the user's Steam screenshot library from disk.
+   *
+   * @param filename - The absolute path to the screenshot image file
+   * @param thumbnailFilename - Optional path to a thumbnail image (can be null/undefined)
+   * @param width - Width of the screenshot in pixels
+   * @param height - Height of the screenshot in pixels
+   * @returns The screenshot handle, or throws an error if the operation fails
+   *
+   * This call is asynchronous. The screenshot will be processed and added to the library.
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#AddScreenshotToLibrary}
+   */
+  export function addScreenshotToLibrary(filename: string, thumbnailFilename: string | undefined | null, width: number, height: number): number
 }
 export declare namespace stats {
   export function getInt(name: string): number | null

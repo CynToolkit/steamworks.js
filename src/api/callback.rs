@@ -48,6 +48,8 @@ pub mod callback {
         P2PSessionConnectFail,
         GameLobbyJoinRequested,
         MicroTxnAuthorizationResponse,
+        ScreenshotRequested,
+        ScreenshotReady,
     }
 
     #[napi(ts_generic_types = "C extends keyof import('./callbacks').CallbackReturns")]
@@ -90,6 +92,15 @@ pub mod callback {
             }
             SteamCallback::MicroTxnAuthorizationResponse => {
                 register_callback::<steamworks::MicroTxnAuthorizationResponse>(threadsafe_handler)
+            }
+            // TODO: Uncomment when steamworks-rs exposes these callback types
+            SteamCallback::ScreenshotRequested => {
+                // register_callback::<steamworks::ScreenshotRequested>(threadsafe_handler)
+                panic!("ScreenshotRequested callback not yet supported - needs steamworks-rs update")
+            }
+            SteamCallback::ScreenshotReady => {
+                // register_callback::<steamworks::ScreenshotReady>(threadsafe_handler)
+                panic!("ScreenshotReady callback not yet supported - needs steamworks-rs update")
             }
         };
 

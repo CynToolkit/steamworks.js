@@ -53,4 +53,8 @@ export interface CallbackReturns {
         order_id: number | bigint
         authorized: boolean
     }
+    [client.callback.SteamCallback.ScreenshotRequested]: {}
+    [client.callback.SteamCallback.ScreenshotReady]: {
+        local_handle: number | { Fail: null } | { IoFailure: null }
+    }
 }
