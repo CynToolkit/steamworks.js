@@ -56,8 +56,4 @@ export interface CallbackReturns {
     [client.callback.SteamCallback.GameOverlayActivated]: {
         active: boolean
     }
-    [client.callback.SteamCallback.ScreenshotRequested]: {}
-    [client.callback.SteamCallback.ScreenshotReady]: {
-        local_handle: number | { Fail: null } | { IoFailure: null }
-    }
 }
