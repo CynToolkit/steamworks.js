@@ -423,4 +423,122 @@ pub mod workshop {
             Err(e) => Err(Error::from_reason(e.to_string())),
         }
     }
+
+    // TODO: Uncomment these methods once the steamworks-rs PR is merged
+    // PR: https://github.com/Noxime/steamworks-rs/pull/297
+    // These methods require start_playtime_tracking, stop_playtime_tracking, and
+    // stop_playtime_tracking_for_all_items to be added to the steamworks-rs UGC API
+
+    // /// Start tracking playtime on a set of workshop items.
+    // ///
+    // /// When your app shuts down, playtime tracking will automatically stop.
+    // ///
+    // /// @param itemIds - The array of workshop items you want to start tracking. (Maximum of 100 items.)
+    // /// @returns Promise that resolves when the operation completes
+    // ///
+    // /// {@link https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking}
+    // #[napi]
+    // pub async fn start_playtime_tracking(item_ids: Vec<BigInt>) -> Result<(), Error> {
+    //     if item_ids.is_empty() {
+    //         return Err(Error::from_reason(
+    //             "item_ids must contain at least 1 item".to_string(),
+    //         ));
+    //     }
+    //
+    //     if item_ids.len() > 100 {
+    //         return Err(Error::from_reason(
+    //             "item_ids must not contain more than 100 items".to_string(),
+    //         ));
+    //     }
+    //
+    //     let client = crate::client::get_client();
+    //     let (tx, rx) = oneshot::channel();
+    //
+    //     let published_file_ids: Vec<PublishedFileId> = item_ids
+    //         .iter()
+    //         .map(|id| PublishedFileId(id.get_u64().1))
+    //         .collect();
+    //
+    //     client
+    //         .ugc()
+    //         .start_playtime_tracking(&published_file_ids, |result| {
+    //             tx.send(result).unwrap();
+    //         });
+    //
+    //     let result = rx.await.unwrap();
+    //     match result {
+    //         Ok(()) => Ok(()),
+    //         Err(e) => Err(Error::from_reason(e.to_string())),
+    //     }
+    // }
+
+    // /// Stop tracking playtime on a set of workshop items.
+    // ///
+    // /// This will increment the number of "playtime" sessions for those items by one.
+    // /// When your app shuts down, playtime tracking will automatically stop.
+    // ///
+    // /// @param itemIds - The array of workshop items you want to stop tracking. (Maximum of 100 items.)
+    // /// @returns Promise that resolves when the operation completes
+    // ///
+    // /// {@link https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking}
+    // #[napi]
+    // pub async fn stop_playtime_tracking(item_ids: Vec<BigInt>) -> Result<(), Error> {
+    //     if item_ids.is_empty() {
+    //         return Err(Error::from_reason(
+    //             "item_ids must contain at least 1 item".to_string(),
+    //         ));
+    //     }
+    //
+    //     if item_ids.len() > 100 {
+    //         return Err(Error::from_reason(
+    //             "item_ids must not contain more than 100 items".to_string(),
+    //         ));
+    //     }
+    //
+    //     let client = crate::client::get_client();
+    //     let (tx, rx) = oneshot::channel();
+    //
+    //     let published_file_ids: Vec<PublishedFileId> = item_ids
+    //         .iter()
+    //         .map(|id| PublishedFileId(id.get_u64().1))
+    //         .collect();
+    //
+    //     client
+    //         .ugc()
+    //         .stop_playtime_tracking(&published_file_ids, |result| {
+    //             tx.send(result).unwrap();
+    //         });
+    //
+    //     let result = rx.await.unwrap();
+    //     match result {
+    //         Ok(()) => Ok(()),
+    //         Err(e) => Err(Error::from_reason(e.to_string())),
+    //     }
+    // }
+
+    // /// Stop tracking playtime of all workshop items.
+    // ///
+    // /// When your app shuts down, playtime tracking will automatically stop.
+    // /// This will increment the number of "playtime" sessions for all items that were being tracked by one.
+    // ///
+    // /// @returns Promise that resolves when the operation completes
+    // ///
+    // /// {@link https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTrackingForAllItems}
+    // #[napi]
+    // pub async fn stop_playtime_tracking_for_all_items() -> Result<(), Error> {
+    //     let client = crate::client::get_client();
+    //     let (tx, rx) = oneshot::channel();
+    //
+    //     client
+    //         .ugc()
+    //         .stop_playtime_tracking_for_all_items(|result| {
+    //             tx.send(result).unwrap();
+    //         });
+    //
+    //     let result = rx.await.unwrap();
+    //     match result {
+    //         Ok(()) => Ok(()),
+    //         Err(e) => Err(Error::from_reason(e.to_string())),
+    //     }
+    // }
 }
