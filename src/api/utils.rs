@@ -20,6 +20,12 @@ pub mod utils {
     }
 
     #[napi]
+    pub fn get_steam_ui_language() -> String {
+        let client = crate::client::get_client();
+        client.utils().ui_language()
+    }
+
+    #[napi]
     pub fn is_steam_running_on_steam_deck() -> bool {
         let client = crate::client::get_client();
         client.utils().is_steam_running_on_steam_deck()
