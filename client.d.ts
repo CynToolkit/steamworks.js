@@ -262,13 +262,17 @@ export declare namespace overlay {
   export function activateToStore(appId: number, flag: StoreFlag): void
 }
 export declare namespace screenshots {
-  /** Triggers the Steam overlay to take a screenshot. */
+  /**
+   * Triggers the Steam overlay to take a screenshot.
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#TriggerScreenshot}
+   */
   export function triggerScreenshot(): void
   /**
    * Adds a screenshot to the user's Steam screenshot library from disk.
    *
    * @param filename - The absolute path to the screenshot image file
-   * @param thumbnailFilename - Optional path to a thumbnail image (can be null/undefined)
+   * @param thumbnail_filename - Optional path to a thumbnail image (can be null/undefined)
    * @param width - Width of the screenshot in pixels
    * @param height - Height of the screenshot in pixels
    * @returns The screenshot handle, or throws an error if the operation fails
@@ -406,41 +410,6 @@ export declare namespace workshop {
    */
   export function getSubscribedItems(includeLocallyDisabled: boolean): Array<bigint>
   export function deleteItem(itemId: bigint): Promise<void>
-  // TODO: Uncomment these methods once the steamworks-rs PR is merged
-  // /**
-  //  * Start tracking playtime on a set of workshop items.
-  //  *
-  //  * When your app shuts down, playtime tracking will automatically stop.
-  //  *
-  //  * @param itemIds - The array of workshop items you want to start tracking. (Maximum of 100 items.)
-  //  * @returns Promise that resolves when the operation completes
-  //  *
-  //  * {@link https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking}
-  //  */
-  // export function startPlaytimeTracking(itemIds: Array<bigint>): Promise<void>
-  // /**
-  //  * Stop tracking playtime on a set of workshop items.
-  //  *
-  //  * This will increment the number of "playtime" sessions for those items by one.
-  //  * When your app shuts down, playtime tracking will automatically stop.
-  //  *
-  //  * @param itemIds - The array of workshop items you want to stop tracking. (Maximum of 100 items.)
-  //  * @returns Promise that resolves when the operation completes
-  //  *
-  //  * {@link https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking}
-  //  */
-  // export function stopPlaytimeTracking(itemIds: Array<bigint>): Promise<void>
-  // /**
-  //  * Stop tracking playtime of all workshop items.
-  //  *
-  //  * When your app shuts down, playtime tracking will automatically stop.
-  //  * This will increment the number of "playtime" sessions for all items that were being tracked by one.
-  //  *
-  //  * @returns Promise that resolves when the operation completes
-  //  *
-  //  * {@link https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTrackingForAllItems}
-  //  */
-  // export function stopPlaytimeTrackingForAllItems(): Promise<void>
   export const enum UGCQueryType {
     RankedByVote = 0,
     RankedByPublicationDate = 1,
