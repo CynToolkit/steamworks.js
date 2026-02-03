@@ -262,8 +262,26 @@ export declare namespace overlay {
   export function activateToStore(appId: number, flag: StoreFlag): void
 }
 export declare namespace screenshots {
-  /** Triggers the Steam overlay to take a screenshot. */
+  /**
+   * Triggers the Steam overlay to take a screenshot.
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#TriggerScreenshot}
+   */
   export function triggerScreenshot(): void
+  /**
+   * Adds a screenshot to the user's Steam screenshot library from disk.
+   *
+   * @param filename - The absolute path to the screenshot image file
+   * @param thumbnail_filename - Optional path to a thumbnail image (can be null/undefined)
+   * @param width - Width of the screenshot in pixels
+   * @param height - Height of the screenshot in pixels
+   * @returns The screenshot handle, or throws an error if the operation fails
+   *
+   * This call is asynchronous. The screenshot will be processed and added to the library.
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamScreenshots#AddScreenshotToLibrary}
+   */
+  export function addScreenshotToLibrary(filename: string, thumbnailFilename: string | undefined | null, width: number, height: number): number
 }
 export declare namespace stats {
   export function getInt(name: string): number | null
