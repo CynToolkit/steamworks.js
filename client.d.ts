@@ -600,4 +600,38 @@ export declare namespace workshop {
   export function getItems(items: Array<bigint>, queryConfig?: WorkshopItemQueryConfig | undefined | null): Promise<WorkshopItemsResult>
   export function getAllItems(page: number, queryType: UGCQueryType, itemType: UGCType, creatorAppId: number, consumerAppId: number, queryConfig?: WorkshopItemQueryConfig | undefined | null): Promise<WorkshopPaginatedResult>
   export function getUserItems(page: number, accountId: number, listType: UserListType, itemType: UGCType, sortOrder: UserListOrder, appIds: AppIDs, queryConfig?: WorkshopItemQueryConfig | undefined | null): Promise<WorkshopPaginatedResult>
+  /**
+   * Start tracking playtime on a set of workshop items.
+   *
+   * When your app shuts down, playtime tracking will automatically stop.
+   *
+   * @param itemIds - The array of workshop items you want to start tracking. (Maximum of 100 items.)
+   * @returns Promise that resolves when the operation completes
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamUGC#StartPlaytimeTracking}
+   */
+  export function startPlaytimeTracking(itemIds: Array<bigint>): Promise<void>
+  /**
+   * Stop tracking playtime on a set of workshop items.
+   *
+   * This will increment the number of "playtime" sessions for those items by one.
+   * When your app shuts down, playtime tracking will automatically stop.
+   *
+   * @param itemIds - The array of workshop items you want to stop tracking. (Maximum of 100 items.)
+   * @returns Promise that resolves when the operation completes
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTracking}
+   */
+  export function stopPlaytimeTracking(itemIds: Array<bigint>): Promise<void>
+  /**
+   * Stop tracking playtime of all workshop items.
+   *
+   * When your app shuts down, playtime tracking will automatically stop.
+   * This will increment the number of "playtime" sessions for all items that were being tracked by one.
+   *
+   * @returns Promise that resolves when the operation completes
+   *
+   * {@link https://partner.steamgames.com/doc/api/ISteamUGC#StopPlaytimeTrackingForAllItems}
+   */
+  export function stopPlaytimeTrackingForAllItems(): Promise<void>
 }
