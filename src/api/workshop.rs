@@ -524,11 +524,9 @@ pub mod workshop {
         let client = crate::client::get_client();
         let (tx, rx) = oneshot::channel();
 
-        client
-            .ugc()
-            .stop_playtime_tracking_for_all_items(|result| {
-                tx.send(result).unwrap();
-            });
+        client.ugc().stop_playtime_tracking_for_all_items(|result| {
+            tx.send(result).unwrap();
+        });
 
         let result = rx.await.unwrap();
         match result {
