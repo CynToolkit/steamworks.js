@@ -140,9 +140,4 @@ jobs:
           echo "- Dist directory:" && ls -R dist
 
       - name: Publish to npm
-        run: npm publish
-
-      # - name: Publish to npm
-      #   uses: JS-DevTools/npm-publish@v1
-      #   with:
-      #     token: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --access public
