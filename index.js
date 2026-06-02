@@ -55,7 +55,6 @@ module.exports.electronEnableSteamOverlay = (disableEachFrameInvalidation) => {
     }
 
     electron.app.commandLine.appendSwitch('in-process-gpu')
-    electron.app.commandLine.appendSwitch('disable-direct-composition')
 
     if (!disableEachFrameInvalidation) {
         /** @param {electron.BrowserWindow} browserWindow */
@@ -94,7 +93,6 @@ module.exports.electronEnableSteamOverlay2 = (fpsLimit = 30) => {
     // Wrap switch appending in try-catch
     try {
         app.commandLine.appendSwitch('in-process-gpu');
-        app.commandLine.appendSwitch('disable-direct-composition');
         app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
         app.commandLine.appendSwitch('disable-http-cache');
         app.commandLine.appendSwitch('use-angle', 'd3d11');
